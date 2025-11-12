@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import dev.revere.alley.AlleyPlugin;
 import dev.revere.alley.library.menu.Button;
 import dev.revere.alley.library.menu.Menu;
+import dev.revere.alley.library.menu.impl.CloseButton;
 import dev.revere.alley.feature.kit.KitService;
 import dev.revere.alley.feature.kit.Kit;
 import dev.revere.alley.feature.kit.setting.types.mode.KitSettingRanked;
@@ -19,6 +20,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +125,10 @@ public class LeaderboardMenu extends Menu {
         }
 
         this.addBorder(buttons, 15, 5);
+
+        // Add close button at bottom center
+        int closeButtonSlot = (5 * 9) - 5; // Slot 40
+        buttons.put(closeButtonSlot, new CloseButton("INK_SACK", 1, "&cClose", Arrays.asList("&7Click to close this menu")));
 
         return buttons;
     }

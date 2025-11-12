@@ -2,11 +2,13 @@ package dev.revere.alley.feature.party.menu.duel;
 
 import dev.revere.alley.AlleyPlugin;
 import dev.revere.alley.library.menu.Button;
+import dev.revere.alley.library.menu.impl.CloseButton;
 import dev.revere.alley.library.menu.pagination.PaginatedMenu;
 import dev.revere.alley.feature.party.PartyService;
 import dev.revere.alley.feature.party.menu.duel.button.DuelOtherPartyButton;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +28,11 @@ public class PartyDuelMenu extends PaginatedMenu {
     public Map<Integer, Button> getGlobalButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        this.addGlassHeader(buttons, 15);
+        this.addBorder(buttons, 15, 5);
+
+        // Add close button at bottom center
+        int closeButtonSlot = (5 * 9) - 5; // Slot 40
+        buttons.put(closeButtonSlot, new CloseButton("INK_SACK", 1, "&cClose", Arrays.asList("&7Click to close this menu")));
 
         return buttons;
     }

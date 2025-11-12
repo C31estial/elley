@@ -10,12 +10,16 @@ import dev.revere.alley.feature.party.menu.event.impl.PartyEventFFAMenu;
 import dev.revere.alley.feature.party.menu.event.impl.PartyEventSplitMenu;
 import dev.revere.alley.library.menu.Button;
 import dev.revere.alley.library.menu.Menu;
+import dev.revere.alley.library.menu.impl.CloseButton;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,61 +34,105 @@ import java.util.Map;
 public class PartyEventMenu extends Menu {
     @Override
     public String getTitle(Player player) {
-        return "&6&lChoose a party event type";
+        File configFile = new File(AlleyPlugin.getInstance().getDataFolder(), "menus/party-event-menu.yml");
+
+        if (!configFile.exists()) {
+            return "&6&lChoose a party event type";
+        }
+
+        FileConfiguration config = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(configFile);
+        String title = config.getString("menu.title", "&6&lChoose a party event type");
+        return CC.translate(applyColors(title, config));
     }
 
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         final Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(11, new PartyEventButton(
-                Material.DIAMOND_SWORD, 0,
-                "&6&lTeam split",
-                Arrays.asList(
-                        CC.MENU_BAR,
-                        "&7Split the party into",
-                        "&72 teams and fight",
-                        "&7against each other.",
-                        "",
-                        "&aClick to select a kit.",
-                        CC.MENU_BAR
-                )
-        ));
+        File configFile = new File(AlleyPlugin.getInstance().getDataFolder(), "menus/party-event-menu.yml");
+        FileConfiguration config = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(configFile);
 
-        buttons.put(13, new PartyEventButton(
-                Material.GOLD_AXE, 0,
-                "&6&lFree for all",
-                Arrays.asList(
-                        CC.MENU_BAR,
-                        "&7Every player fights",
-                        "&7against each other.",
-                        "",
-                        "&aClick to select a kit.",
-                        CC.MENU_BAR
-                )
-        ));
+        if (configFile.exists() && config.contains("events")) {
+            // Load from config
+            for (String eventKey : config.getConfigurationSection("events").getKeys(false)) {
+                String basePath = "events." + eventKey;
+                int slot = config.getInt(basePath + ".slot", 20);
+                String displayName = config.getString(basePath + ".display-name", "&6&lEvent");
+                String materialName = config.getString(basePath + ".material", "DIAMOND_SWORD");
+                int durability = config.getInt(basePath + ".durability", 0);
+                List<String> lore = config.getStringList(basePath + ".lore");
 
-        buttons.put(15, new PartyEventButton(
-                Material.REDSTONE, 0,
-                "&cBest of 3 Sumo",
-                Arrays.asList(
-                        CC.MENU_BAR,
-                        "&7This event is not",
-                        "&7implemented yet.",
-                        "",
-                        "&c&mClick to start the event.",
-                        CC.MENU_BAR
-                )
-        ));
+                // Apply color replacements
+                displayName = applyColors(displayName, config);
+                List<String> translatedLore = new ArrayList<>();
+                for (String line : lore) {
+                    translatedLore.add(applyColors(line, config));
+                }
 
-        this.addGlass(buttons, 15);
+                Material material;
+                try {
+                    material = Material.valueOf(materialName);
+                } catch (IllegalArgumentException e) {
+                    material = Material.DIAMOND_SWORD;
+                }
+
+                buttons.put(slot, new PartyEventButton(material, durability, displayName, translatedLore));
+            }
+        } else {
+            // Fallback to hardcoded buttons
+            buttons.put(20, new PartyEventButton(
+                    Material.DIAMOND_SWORD, 0,
+                    "&6&lTeam split",
+                    Arrays.asList(
+                            CC.MENU_BAR,
+                            "&7Split the party into",
+                            "&72 teams and fight",
+                            "&7against each other.",
+                            "",
+                            "&aClick to select a kit.",
+                            CC.MENU_BAR
+                    )
+            ));
+
+            buttons.put(22, new PartyEventButton(
+                    Material.GOLD_AXE, 0,
+                    "&6&lFree for all",
+                    Arrays.asList(
+                            CC.MENU_BAR,
+                            "&7Every player fights",
+                            "&7against each other.",
+                            "",
+                            "&aClick to select a kit.",
+                            CC.MENU_BAR
+                    )
+            ));
+
+            buttons.put(24, new PartyEventButton(
+                    Material.REDSTONE, 0,
+                    "&cBest of 3 Sumo",
+                    Arrays.asList(
+                            CC.MENU_BAR,
+                            "&7This event is not",
+                            "&7implemented yet.",
+                            "",
+                            "&c&mClick to start the event.",
+                            CC.MENU_BAR
+                    )
+            ));
+        }
+
+        this.addBorder(buttons, 15, 5);
+
+        // Add close button at bottom center
+        int closeButtonSlot = (5 * 9) - 5; // Slot 40
+        buttons.put(closeButtonSlot, new CloseButton("INK_SACK", 1, "&cClose", Arrays.asList("&7Click to close this menu")));
 
         return buttons;
     }
 
     @Override
     public int getSize() {
-        return 3 * 9;
+        return 5 * 9;
     }
 
     @AllArgsConstructor
@@ -136,5 +184,27 @@ public class PartyEventMenu extends Menu {
                     break;
             }
         }
+    }
+
+    /**
+     * Applies color replacements from config.
+     *
+     * @param text   the text to apply colors to
+     * @param config the configuration file
+     * @return the text with colors applied
+     */
+    private String applyColors(String text, FileConfiguration config) {
+        Map<String, String> colors = new HashMap<>();
+        if (config.contains("colors")) {
+            for (String key : config.getConfigurationSection("colors").getKeys(false)) {
+                colors.put("{" + key + "}", config.getString("colors." + key));
+            }
+        }
+
+        for (Map.Entry<String, String> entry : colors.entrySet()) {
+            text = text.replace(entry.getKey(), entry.getValue());
+        }
+
+        return text;
     }
 }

@@ -1,0 +1,61 @@
+# Party Event Menu Configuration
+# Configure the party event selection menu appearance
+
+# Color Customization - Change these to customize colors throughout the menu
+colors:
+  primary: "&6"        # Gold - Main color
+  secondary: "&7"      # Gray - Description color
+  accent: "&a"         # Green - Action prompts
+  disabled: "&c"       # Red - Disabled features
+  divider: "&7━━━━━━━━━━━━━━━━━━━━━━━━━"  # Menu bar separator
+
+menu:
+  title: "{primary}&lChoose a party event type"
+  size: 45  # 5 rows
+  border:
+    enabled: true
+    material: STAINED_GLASS_PANE
+    data: 15  # Black
+    name: " "
+
+# Party event type buttons
+events:
+  team-split:
+    slot: 20
+    display-name: "{primary}&lTeam split"
+    material: DIAMOND_SWORD
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Split the party into"
+      - "{secondary}2 teams and fight"
+      - "{secondary}against each other."
+      - ""
+      - "{accent}Click to select a kit."
+      - "{divider}"
+
+  free-for-all:
+    slot: 22
+    display-name: "{primary}&lFree for all"
+    material: GOLD_AXE
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Every player fights"
+      - "{secondary}against each other."
+      - ""
+      - "{accent}Click to select a kit."
+      - "{divider}"
+
+  best-of-3-sumo:
+    slot: 24
+    display-name: "{disabled}Best of 3 Sumo"
+    material: REDSTONE
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}This event is not"
+      - "{secondary}implemented yet."
+      - ""
+      - "{disabled}&mClick to start the event."
+      - "{divider}"

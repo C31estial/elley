@@ -149,6 +149,16 @@ public enum PracticeSettingType {
                     "&aClick to view.",
                     CC.MENU_BAR
             )
+    ),
+
+    EVENTS(34, "&6&lEvents", Material.EYE_OF_ENDER,
+            settings -> Arrays.asList(
+                    CC.MENU_BAR,
+                    "&7Host and join server events.",
+                    "",
+                    "&aClick to view.",
+                    CC.MENU_BAR
+            )
     )
 
     ;

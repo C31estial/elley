@@ -176,8 +176,8 @@ hotbar-items:
     menu: "HOST_EVENTS_MENU"
     types:
       LOBBY:
-        enabled: true
-        slot: 7
+        enabled: false
+        slot: 0
       PARTY:
         enabled: false
         slot: 0

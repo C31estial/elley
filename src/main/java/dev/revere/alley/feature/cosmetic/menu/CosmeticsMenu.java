@@ -6,6 +6,7 @@ import dev.revere.alley.core.profile.menu.shop.button.ShopCategoryButton;
 import dev.revere.alley.library.menu.Button;
 import dev.revere.alley.library.menu.Menu;
 import dev.revere.alley.library.menu.impl.BackButton;
+import dev.revere.alley.library.menu.impl.CloseButton;
 import dev.revere.alley.feature.cosmetic.model.CosmeticType;
 import dev.revere.alley.feature.cosmetic.menu.button.CosmeticCategoryButton;
 import dev.revere.alley.core.profile.menu.setting.PracticeSettingsMenu;
@@ -15,6 +16,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,21 +45,25 @@ public class CosmeticsMenu extends Menu {
         final Map<Integer, Button> buttons = new HashMap<>();
 
         buttons.put(0, new BackButton(new PracticeSettingsMenu()));
-        buttons.put(10, new CosmeticCategoryButton(CosmeticType.KILL_EFFECT, Material.DIAMOND_SWORD));
-        buttons.put(11, new CosmeticCategoryButton(CosmeticType.SOUND_EFFECT, Material.NOTE_BLOCK));
-        buttons.put(12, new CosmeticCategoryButton(CosmeticType.CLOAK, Material.BLAZE_POWDER));
-        buttons.put(13, new CosmeticCategoryButton(CosmeticType.SUIT, Material.GOLD_CHESTPLATE));
-        buttons.put(14, new CosmeticCategoryButton(CosmeticType.PROJECTILE_TRAIL, Material.ARROW));
-        buttons.put(15, new CosmeticCategoryButton(CosmeticType.KILL_MESSAGE, Material.BOOK_AND_QUILL));
+        buttons.put(19, new CosmeticCategoryButton(CosmeticType.KILL_EFFECT, Material.DIAMOND_SWORD));
+        buttons.put(20, new CosmeticCategoryButton(CosmeticType.SOUND_EFFECT, Material.NOTE_BLOCK));
+        buttons.put(21, new CosmeticCategoryButton(CosmeticType.CLOAK, Material.BLAZE_POWDER));
+        buttons.put(22, new CosmeticCategoryButton(CosmeticType.SUIT, Material.GOLD_CHESTPLATE));
+        buttons.put(23, new CosmeticCategoryButton(CosmeticType.PROJECTILE_TRAIL, Material.ARROW));
+        buttons.put(24, new CosmeticCategoryButton(CosmeticType.KILL_MESSAGE, Material.BOOK_AND_QUILL));
 
-        this.addBorder(buttons, 15, 3);
+        this.addBorder(buttons, 15, 5);
+
+        // Add close button at bottom center
+        int closeButtonSlot = (5 * 9) - 5; // Slot 40
+        buttons.put(closeButtonSlot, new CloseButton("INK_SACK", 1, "&cClose", Arrays.asList("&7Click to close this menu")));
 
         return buttons;
     }
 
     @Override
     public int getSize() {
-        return 3 * 9;
+        return 5 * 9;
     }
 
     /**

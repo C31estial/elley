@@ -11,6 +11,7 @@ import dev.revere.alley.core.profile.enums.WorldTime;
 import dev.revere.alley.core.profile.menu.music.MusicDiscSelectorMenu;
 import dev.revere.alley.core.profile.menu.setting.enums.PracticeSettingType;
 import dev.revere.alley.feature.cosmetic.menu.CosmeticsMenu;
+import dev.revere.alley.feature.host.menu.HostMenu;
 import dev.revere.alley.library.menu.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
@@ -87,6 +88,9 @@ public class PracticeSettingsButton extends Button {
                 break;
             case COSMETICS:
                 new CosmeticsMenu().openMenu(player);
+                break;
+            case EVENTS:
+                new HostMenu().openMenu(player);
                 break;
         }
 
