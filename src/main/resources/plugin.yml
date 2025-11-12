@@ -1,9 +1,10 @@
-name: Alley
+name: Elley
 version: '${project.version}'
 main: dev.revere.alley.AlleyPlugin
-authors: [ "Emmy", "Remi" ]
-description: '${project.description}'
-website: https://discord.gg/revere
+authors: [ "Emmy", "Remi", "Calimarri" ]
+description: 'Custom fork of Alley for EB Practice'
+website: dsc.gg/ebeagler
+depend:
+  - FastAsyncWorldEdit
 softDepend:
   - PlaceholderAPI
-depend: [ FastAsyncWorldEdit, WorldEdit ]

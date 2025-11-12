@@ -24,6 +24,11 @@ public class ToggleLobbyMusicCommand extends BaseCommand {
     @Override
     public void onCommand(CommandArgs command) {
         Player player = command.getPlayer();
+        player.sendMessage(CC.translate("&cLobby music has been disabled."));
+        return;
+
+        // Disabled functionality
+        /*
         Profile profile = this.getProfile(player.getUniqueId());
         if (profile.isBusy()) {
             player.sendMessage(this.getString(GlobalMessagesLocaleImpl.ERROR_YOU_MUST_BE_IN_LOBBY));
@@ -43,5 +48,6 @@ public class ToggleLobbyMusicCommand extends BaseCommand {
         player.sendMessage(CC.translate(this.getString(GlobalMessagesLocaleImpl.PROFILE_TOGGLED_LOBBY_MUSIC)
                 .replace("{status}", isEnabled ? "&aenabled" : "&cdisabled"))
         );
+        */
     }
 }

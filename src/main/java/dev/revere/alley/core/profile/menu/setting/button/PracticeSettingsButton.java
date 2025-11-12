@@ -88,9 +88,6 @@ public class PracticeSettingsButton extends Button {
             case COSMETICS:
                 new CosmeticsMenu().openMenu(player);
                 break;
-            case LOBBY_MUSIC:
-                new MusicDiscSelectorMenu().openMenu(player);
-                break;
         }
 
         this.playNeutral(player);

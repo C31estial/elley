@@ -34,7 +34,7 @@ public class NametagPerspective {
         this.service = service;
         this.viewer = viewer;
 
-        this.knownAdapters = registry.getAdapterCache().asMap().values().stream()
+        this.knownAdapters = registry.getAdapterCache().values().stream()
                 .map(NametagAdapter::getName)
                 .collect(Collectors.toSet());
 

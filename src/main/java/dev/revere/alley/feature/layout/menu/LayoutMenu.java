@@ -3,14 +3,15 @@ package dev.revere.alley.feature.layout.menu;
 import dev.revere.alley.AlleyPlugin;
 import dev.revere.alley.library.menu.Button;
 import dev.revere.alley.library.menu.Menu;
+import dev.revere.alley.library.menu.impl.CloseButton;
 import dev.revere.alley.feature.kit.KitCategory;
 import dev.revere.alley.feature.queue.QueueService;
 import dev.revere.alley.feature.queue.Queue;
 import dev.revere.alley.feature.layout.menu.button.LayoutButton;
-import dev.revere.alley.feature.layout.menu.button.LayoutModeSwitcherButton;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,13 +42,14 @@ public class LayoutMenu extends Menu {
             }
         }
 
-        if (this.kitCategory == KitCategory.NORMAL) {
-            buttons.put(40, new LayoutModeSwitcherButton(KitCategory.EXTRA));
-        } else {
-            buttons.put(4, new LayoutModeSwitcherButton(KitCategory.NORMAL));
-        }
+        // Add border only (not full background)
+        int size = this.getSize();
+        int rows = size / 9;
+        this.addBorder(buttons, 15, rows);
 
-        this.addGlass(buttons, 15);
+        // Add close button at bottom center (dynamic position based on menu size)
+        int closeButtonSlot = (rows * 9) - 5; // Bottom row, center slot
+        buttons.put(closeButtonSlot, new CloseButton("INK_SACK", 1, "&cClose", Arrays.asList("&7Click to close this menu")));
 
         return buttons;
     }

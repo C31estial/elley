@@ -46,7 +46,10 @@ public class LayoutSelectRoleKitMenu extends Menu {
         buttons.put(12, new RoleButton(BaseRaiderRole.RAIDER, raiderKit));
         buttons.put(14, new RoleButton(BaseRaiderRole.TRAPPER, trapperKit));
 
-        this.addGlass(buttons, 15);
+        // Add border only (not full background)
+        int size = this.getSize();
+        int rows = size / 9;
+        this.addBorder(buttons, 15, rows);
 
         return buttons;
     }

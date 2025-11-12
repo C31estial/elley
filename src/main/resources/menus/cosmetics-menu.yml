@@ -1,0 +1,100 @@
+# Cosmetics Menu Configuration
+# Configure the cosmetics selection menu appearance
+
+# Color Customization - Change these to customize colors throughout the menu
+colors:
+  primary: "&6"        # Gold - Main color
+  secondary: "&7"      # Gray - Description color
+  accent: "&a"         # Green - Action prompts
+  back: "&c"           # Red - Back button
+  divider: "&7━━━━━━━━━━━━━━━━━━━━━━━━━"  # Menu bar separator
+
+menu:
+  title: "{primary}&lCosmetics"
+  size: 27  # 3 rows
+  border:
+    enabled: true
+    material: STAINED_GLASS_PANE
+    data: 15  # Black
+    name: " "
+  back-button:
+    enabled: true
+    slot: 0
+    material: ARROW
+    name: "{back}Back"
+    lore:
+      - "{secondary}Click to go back."
+
+# Cosmetic category buttons
+categories:
+  kill-effect:
+    slot: 10
+    display-name: "{primary}&lKill Effects"
+    material: DIAMOND_SWORD
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Customize kill effects."
+      - ""
+      - "{accent}Click to view."
+      - "{divider}"
+
+  sound-effect:
+    slot: 11
+    display-name: "{primary}&lSound Effects"
+    material: NOTE_BLOCK
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Customize sound effects."
+      - ""
+      - "{accent}Click to view."
+      - "{divider}"
+
+  cloak:
+    slot: 12
+    display-name: "{primary}&lCloaks"
+    material: BLAZE_POWDER
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Customize your cloak."
+      - ""
+      - "{accent}Click to view."
+      - "{divider}"
+
+  suit:
+    slot: 13
+    display-name: "{primary}&lSuits"
+    material: GOLD_CHESTPLATE
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Customize your suit."
+      - ""
+      - "{accent}Click to view."
+      - "{divider}"
+
+  projectile-trail:
+    slot: 14
+    display-name: "{primary}&lProjectile Trails"
+    material: ARROW
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Customize projectile trails."
+      - ""
+      - "{accent}Click to view."
+      - "{divider}"
+
+  kill-message:
+    slot: 15
+    display-name: "{primary}&lKill Messages"
+    material: BOOK_AND_QUILL
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Customize kill messages."
+      - ""
+      - "{accent}Click to view."
+      - "{divider}"

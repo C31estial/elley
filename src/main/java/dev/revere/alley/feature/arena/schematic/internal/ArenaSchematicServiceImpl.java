@@ -116,7 +116,7 @@ public class ArenaSchematicServiceImpl implements ArenaSchematicService {
     }
 
     /**
-     * Pastes the schematic at the specified location.
+     * Pastes the schematic at the specified location using FAWE.
      *
      * @param location      The location to paste the schematic.
      * @param schematicFile The file containing the schematic to paste.

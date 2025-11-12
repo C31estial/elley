@@ -1,0 +1,46 @@
+# Current Matches Menu Configuration
+# Configure the current matches menu appearance (Paginated Menu)
+
+# Color Customization - Change these to customize colors throughout the menu
+colors:
+  primary: "&6"        # Gold - Main color
+  secondary: "&7"      # Gray - Description color
+  accent: "&a"         # Green - Action prompts
+  vs: "&7"             # VS text color
+  info: "&f"           # Info text color (white)
+  divider: "&7━━━━━━━━━━━━━━━━━━━━━━━━━"  # Menu bar separator
+
+menu:
+  title: "{primary}&lCurrent Matches ({count})"  # {count} = number of active matches
+  size: 54  # 6 rows (paginated menu)
+  header:
+    material: STAINED_GLASS_PANE
+    data: 15  # Black
+    name: " "
+
+# Refresh button
+refresh-button:
+  slot: 4
+  display-name: "{primary}&lRefresh"
+  material: CARPET
+  durability: 2  # Lime green
+  lore:
+    - " {info}◆ {primary}Press to refresh the matches"
+
+# Match button template (dynamically created for each match)
+match-button:
+  # {player1} and {player2} are replaced with actual player names
+  display-name: "{primary}&l{player1} {vs}vs {primary}&l{player2}"
+  lore:
+    - "{divider}"
+    - " {info}◆ {primary}Arena: {info}{arena}"
+    - " {info}◆ {primary}Kit: {info}{kit}"
+    - " {info}◆ {primary}Queue: {info}{queue}"
+    - " "
+    - "{accent}Click to spectate."
+    - "{divider}"
+
+# Error messages
+messages:
+  already-spectating: "&cYou are already spectating a match!"
+  no-matches: "&cThere are no active matches right now."

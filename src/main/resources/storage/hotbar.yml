@@ -358,7 +358,7 @@ hotbar-items:
         slot: 0
       QUEUE:
         enabled: true
-        slot: 1
+        slot: 7
       SPECTATOR:
         enabled: false
         slot: 0

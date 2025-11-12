@@ -807,15 +807,26 @@ public abstract class Match {
         visibilityService.updateVisibility(player);
         hotbarService.applyHotbarItems(player);
 
-        if (this.arena.getCenter() == null) {
+        // Calculate spectator spawn: center of two spawn points + 5Y
+        Location pos1 = this.arena.getPos1();
+        Location pos2 = this.arena.getPos2();
+
+        if (pos1 == null || pos2 == null) {
             player.sendMessage(CC.translate("&cThe arena is not set up for spectating"));
             return;
         }
 
+        // Calculate center between the two spawn points
+        double centerX = (pos1.getX() + pos2.getX()) / 2;
+        double centerY = (pos1.getY() + pos2.getY()) / 2 + 5; // Add 5 to Y
+        double centerZ = (pos1.getZ() + pos2.getZ()) / 2;
+
+        Location spectatorSpawn = new Location(pos1.getWorld(), centerX, centerY, centerZ);
+
         player.setAllowFlight(true);
         player.setFlying(true);
 
-        ListenerUtil.teleportAndClearSpawn(player, this.arena.getCenter());
+        ListenerUtil.teleportAndClearSpawn(player, spectatorSpawn);
 
         ProfileService profileService = this.plugin.getService(ProfileService.class);
         Profile profile = profileService.getProfile(player.getUniqueId());

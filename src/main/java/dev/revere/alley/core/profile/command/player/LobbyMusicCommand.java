@@ -23,6 +23,11 @@ public class LobbyMusicCommand extends BaseCommand {
     @Override
     public void onCommand(CommandArgs command) {
         Player player = command.getPlayer();
+        player.sendMessage(dev.revere.alley.common.text.CC.translate("&cLobby music has been disabled."));
+        return;
+
+        // Disabled functionality
+        /*
         Profile profile = this.getProfile(player.getUniqueId());
         if (!profile.isInLobbyOrInQueue()) {
             player.sendMessage(this.getString(GlobalMessagesLocaleImpl.ERROR_YOU_MUST_BE_IN_LOBBY));
@@ -30,5 +35,6 @@ public class LobbyMusicCommand extends BaseCommand {
         }
 
         new MusicDiscSelectorMenu().openMenu(player);
+        */
     }
 }

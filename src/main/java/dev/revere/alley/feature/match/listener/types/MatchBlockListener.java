@@ -280,11 +280,12 @@ public class MatchBlockListener implements Listener {
 
     @EventHandler
     private void onProjectileHit(ProjectileHitEvent event) {
-        if (event.getEntityType() != EntityType.SNOWBALL || event.getHitBlock() == null) {
+        if (event.getEntityType() != EntityType.SNOWBALL) {
             return;
         }
 
-        Block hitBlock = event.getHitBlock();
+        // In 1.8, getHitBlock() doesn't exist, so we get the block the projectile is in
+        Block hitBlock = event.getEntity().getLocation().getBlock();
         if (hitBlock.getType() != Material.SNOW && hitBlock.getType() != Material.SNOW_BLOCK) {
             return;
         }

@@ -15,8 +15,11 @@ import dev.revere.alley.feature.leaderboard.menu.button.LeaderboardKitButton;
 import dev.revere.alley.core.profile.ProfileService;
 import dev.revere.alley.core.profile.Profile;
 import dev.revere.alley.core.profile.menu.statistic.button.StatisticsButton;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,22 +36,56 @@ public class LeaderboardMenu extends Menu {
         ProfileService profileService = AlleyPlugin.getInstance().getService(ProfileService.class);
         Profile profile = profileService.getProfile(player.getUniqueId());
 
+        File configFile = new File(AlleyPlugin.getInstance().getDataFolder(), "menus/leaderboard-menu.yml");
+
+        if (!configFile.exists()) {
+            // Fallback to hardcoded titles
+            switch (profile.getLeaderboardType()) {
+                case RANKED:
+                    return "&6&lRanked Leaderboards";
+                case UNRANKED:
+                    return "&6&lUnranked Leaderboards";
+                case UNRANKED_MONTHLY:
+                    return "&6&lMonthly Leaderboards";
+                case FFA:
+                    return "&6&lFFA Leaderboards";
+                case TOURNAMENT:
+                    return "&6&lTournament Leaderboards";
+                case WIN_STREAK:
+                    return "&6&lWin Streak Leaderboards";
+                default:
+                    return "&6&lLeaderboards";
+            }
+        }
+
+        FileConfiguration config = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(configFile);
+        String title;
+
         switch (profile.getLeaderboardType()) {
             case RANKED:
-                return "&6&lRanked Leaderboards";
+                title = config.getString("menu.titles.ranked", "&6&lRanked Leaderboards");
+                break;
             case UNRANKED:
-                return "&6&lUnranked Leaderboards";
+                title = config.getString("menu.titles.unranked", "&6&lUnranked Leaderboards");
+                break;
             case UNRANKED_MONTHLY:
-                return "&6&lMonthly Leaderboards";
+                title = config.getString("menu.titles.unranked-monthly", "&6&lMonthly Leaderboards");
+                break;
             case FFA:
-                return "&6&lFFA Leaderboards";
+                title = config.getString("menu.titles.ffa", "&6&lFFA Leaderboards");
+                break;
             case TOURNAMENT:
-                return "&6&lTournament Leaderboards";
+                title = config.getString("menu.titles.tournament", "&6&lTournament Leaderboards");
+                break;
             case WIN_STREAK:
-                return "&6&lWin Streak Leaderboards";
+                title = config.getString("menu.titles.win-streak", "&6&lWin Streak Leaderboards");
+                break;
             default:
-                return "&6&lLeaderboards";
+                title = config.getString("menu.titles.default", "&6&lLeaderboards");
+                break;
         }
+
+        return dev.revere.alley.common.text.CC.translate(applyColors(title, config));
     }
 
     @Override
@@ -93,5 +130,27 @@ public class LeaderboardMenu extends Menu {
     @Override
     public int getSize() {
         return 5 * 9;
+    }
+
+    /**
+     * Applies color replacements from config.
+     *
+     * @param text   the text to apply colors to
+     * @param config the configuration file
+     * @return the text with colors applied
+     */
+    private String applyColors(String text, FileConfiguration config) {
+        Map<String, String> colors = new HashMap<>();
+        if (config.contains("colors")) {
+            for (String key : config.getConfigurationSection("colors").getKeys(false)) {
+                colors.put("{" + key + "}", config.getString("colors." + key));
+            }
+        }
+
+        for (Map.Entry<String, String> entry : colors.entrySet()) {
+            text = text.replace(entry.getKey(), entry.getValue());
+        }
+
+        return text;
     }
 }

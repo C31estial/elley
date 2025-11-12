@@ -45,19 +45,7 @@ public class KnockbackAdapterImpl implements KnockbackAdapter {
      * @return The selected knockback implementation.
      */
     private Knockback determineKnockback() {
-        Knockback selectedImplementation = new DefaultKnockbackImpl();
-
-        for (KnockbackType kbType : KnockbackType.values()) {
-            if (this.plugin.getServer().getName().equalsIgnoreCase(kbType.getSpigotName())) {
-                switch (kbType) {
-                    case ZONE:
-                        selectedImplementation = new ZoneKnockbackImpl();
-                        break;
-                }
-                break;
-            }
-        }
-
-        return selectedImplementation;
+        // Always use default knockback implementation for standard Spigot
+        return new DefaultKnockbackImpl();
     }
 }

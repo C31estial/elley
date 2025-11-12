@@ -1,12 +1,15 @@
 package dev.revere.alley.visual.nametag.internal;
 
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import dev.revere.alley.visual.nametag.NametagAdapter;
 import dev.revere.alley.visual.nametag.NametagView;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,15 +20,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Getter
 public class NametagRegistry {
-    private final Cache<String, NametagAdapter> adapterCache;
+    // Use a simple map for caching to avoid Guava version compatibility issues
+    private final Map<String, NametagAdapter> adapterCache = new ConcurrentHashMap<>();
     private final NametagServiceImpl service;
     private final AtomicInteger teamIdCounter = new AtomicInteger(0);
 
     public NametagRegistry(NametagServiceImpl service) {
         this.service = service;
-        this.adapterCache = CacheBuilder.newBuilder()
-                .expireAfterAccess(10, TimeUnit.MINUTES)
-                .build();
     }
 
     /**
@@ -36,14 +37,10 @@ public class NametagRegistry {
      */
     public NametagAdapter getAdapter(NametagView view) {
         String key = view.getPrefix() + "|" + view.getSuffix() + "|" + view.getVisibility().name();
-        try {
-            return adapterCache.get(key, () -> {
-                String teamName = "nt" + teamIdCounter.getAndIncrement();
-                return new NametagAdapter(service, teamName, view.getPrefix(), view.getSuffix(), view.getVisibility());
-            });
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load nametag adapter from cache", e);
-        }
+        return adapterCache.computeIfAbsent(key, k -> {
+            String teamName = "nt" + teamIdCounter.getAndIncrement();
+            return new NametagAdapter(service, teamName, view.getPrefix(), view.getSuffix(), view.getVisibility());
+        });
     }
 
     /**
@@ -52,7 +49,7 @@ public class NametagRegistry {
      * @param player The player to receive the packets.
      */
     public void sendAllAdapters(Player player) {
-        for (NametagAdapter adapter : adapterCache.asMap().values()) {
+        for (NametagAdapter adapter : adapterCache.values()) {
             adapter.sendCreationPacket(player);
         }
     }

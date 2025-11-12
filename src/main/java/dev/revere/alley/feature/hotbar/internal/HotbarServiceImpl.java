@@ -184,6 +184,19 @@ public class HotbarServiceImpl implements HotbarService {
         List<HotbarItem> itemsToApply = this.getItemsForType(type);
         if (itemsToApply == null) return;
 
+        // Filter out kit editor item when in queue
+        if (type == HotbarType.QUEUE) {
+            itemsToApply = itemsToApply.stream()
+                    .filter(item -> {
+                        // Exclude items that open the layout editor menu
+                        if (item.getActionData() != null && item.getActionData().getMenuName() != null) {
+                            return !item.getActionData().getMenuName().equals("LAYOUT_EDITOR_MENU");
+                        }
+                        return true;
+                    })
+                    .collect(Collectors.toList());
+        }
+
         for (HotbarItem item : itemsToApply) {
             ItemStack itemStack = this.buildReceivableItem(item);
             player.getInventory().setItem(item.getTypeData().get(type.ordinal()).getSlot(), itemStack);

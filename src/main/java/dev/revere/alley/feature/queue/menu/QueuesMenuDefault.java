@@ -55,32 +55,27 @@ public class QueuesMenuDefault extends Menu {
 
         QueueService queueService = AlleyPlugin.getInstance().getService(QueueService.class);
 
-        buttons.put(11, new QueuesButtonDefault("&6&lSolos", Material.DIAMOND_SWORD, 0, Arrays.asList(
+        // Moved to slot 12 (right by 1) and added enchant glint
+        buttons.put(12, new QueuesButtonDefault("&6&lSolos", Material.DIAMOND_SWORD, 0, Arrays.asList(
                 "&7Casual 1v1s with",
                 "&7no loss penalty.",
                 "",
                 "&6Players: &f" + queueService.getPlayerCountOfGameType("Unranked"),
                 "",
                 "&aClick to play!"
-        )));
+        ), true));
 
-        buttons.put(13, new QueuesButtonDefault("&6&lBots", Material.GOLD_SWORD, 0, Arrays.asList(
+        // Moved to slot 14 (right by 1) and added enchant glint
+        buttons.put(14, new QueuesButtonDefault("&6&lBots", Material.GOLD_SWORD, 0, Arrays.asList(
                 "&7Practice against bots",
                 "&7to improve your skills.",
                 "",
                 "&6Players: &f" + queueService.getPlayerCountOfGameType("Bots"),
                 "",
                 "&aClick to play!"
-        )));
+        ), true));
 
-        buttons.put(15, new QueuesButtonDefault("&6&lFFA", Material.GOLD_AXE, 0, Arrays.asList(
-                "&7Free for all with",
-                "&7infinity respawns.",
-                "",
-                "&6Players: &f" + queueService.getPlayerCountOfGameType("FFA"),
-                "",
-                "&aClick to play!"
-        )));
+        // FFA tab removed as requested
 
         this.addGlass(buttons, 15);
 
@@ -98,15 +93,22 @@ public class QueuesMenuDefault extends Menu {
         private Material material;
         private int durability;
         private List<String> lore;
+        private boolean glint;
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            return new ItemBuilder(this.material)
+            ItemBuilder builder = new ItemBuilder(this.material)
                     .name(this.displayName)
                     .durability(this.durability)
-                    .lore(this.lore)
-                    .hideMeta()
-                    .build();
+                    .lore(this.lore);
+
+            if (this.glint) {
+                builder.glow(true);
+            }
+
+            builder.hideMeta();
+
+            return builder.build();
         }
 
         @Override

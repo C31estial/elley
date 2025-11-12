@@ -1,5 +1,7 @@
 package dev.revere.alley.feature.cosmetic.menu;
 
+import dev.revere.alley.AlleyPlugin;
+import dev.revere.alley.common.text.CC;
 import dev.revere.alley.core.profile.menu.shop.button.ShopCategoryButton;
 import dev.revere.alley.library.menu.Button;
 import dev.revere.alley.library.menu.Menu;
@@ -9,8 +11,10 @@ import dev.revere.alley.feature.cosmetic.menu.button.CosmeticCategoryButton;
 import dev.revere.alley.core.profile.menu.setting.PracticeSettingsMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +27,15 @@ import java.util.Map;
 public class CosmeticsMenu extends Menu {
     @Override
     public String getTitle(Player player) {
-        return "&6&lCosmetics";
+        File configFile = new File(AlleyPlugin.getInstance().getDataFolder(), "menus/cosmetics-menu.yml");
+
+        if (!configFile.exists()) {
+            return "&6&lCosmetics";
+        }
+
+        FileConfiguration config = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(configFile);
+        String title = config.getString("menu.title", "&6&lCosmetics");
+        return CC.translate(applyColors(title, config));
     }
 
     @Override
@@ -46,5 +58,27 @@ public class CosmeticsMenu extends Menu {
     @Override
     public int getSize() {
         return 3 * 9;
+    }
+
+    /**
+     * Applies color replacements from config.
+     *
+     * @param text   the text to apply colors to
+     * @param config the configuration file
+     * @return the text with colors applied
+     */
+    private String applyColors(String text, FileConfiguration config) {
+        Map<String, String> colors = new HashMap<>();
+        if (config.contains("colors")) {
+            for (String key : config.getConfigurationSection("colors").getKeys(false)) {
+                colors.put("{" + key + "}", config.getString("colors." + key));
+            }
+        }
+
+        for (Map.Entry<String, String> entry : colors.entrySet()) {
+            text = text.replace(entry.getKey(), entry.getValue());
+        }
+
+        return text;
     }
 }

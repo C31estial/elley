@@ -29,7 +29,7 @@ public class LayoutCommand extends BaseCommand {
         ProfileService profileService = this.plugin.getService(ProfileService.class);
         Profile profile = profileService.getProfile(player.getUniqueId());
 
-        if (profile.getState() != ProfileState.LOBBY && profile.getState() != ProfileState.WAITING) {
+        if (profile.getState() != ProfileState.LOBBY) {
             player.sendMessage(this.getString(GlobalMessagesLocaleImpl.ERROR_YOU_MUST_BE_IN_LOBBY));
             return;
         }

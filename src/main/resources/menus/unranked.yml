@@ -1,0 +1,96 @@
+# Unranked Queue Menu Configuration
+#
+# Available Placeholders:
+# {kit-name} - Name of the kit
+# {kit-description} - Description of the kit
+# {playing} - Number of players currently playing
+# {queueing} - Number of players in queue
+# {daily-streak} - Player's daily streak (placeholder for future)
+# {player} - Player's name
+#
+# Color codes supported with & symbol
+
+# Menu settings
+menu:
+  title: "&6&lUnranked Queue"
+  size: 45  # Must be multiple of 9 (9, 18, 27, 36, 45, 54)
+
+  # Border configuration
+  border:
+    enabled: true
+    material: STAINED_GLASS_PANE
+    data: 15  # 15 = black stained glass pane
+    name: " "
+
+  # Back button
+  back-button:
+    enabled: true
+    slot: 0
+    material: ARROW
+    name: "&cBack"
+    lore:
+      - "&7Click to go back"
+
+  # Close button
+  close-button:
+    enabled: true
+    slot: 40
+    material: INK_SACK
+    data: 1  # 1 = red dye
+    name: "&cClose"
+    lore:
+      - "&7Click to close this menu"
+
+# Queue item button configuration
+queue-button:
+  # Starting slot for queue items (will auto-fill from here)
+  start-slot: 10
+
+  # Skip slots at row borders (to avoid going to next row edge)
+  skip-border-slots: true
+
+  # Kit name display color (uses {kit-name} placeholder)
+  kit-name-format: "&d&l{kit-name}"
+
+  # Lore configuration
+  lore:
+    # Separator at top and bottom
+    separator: "&7&m--------------------"
+
+    # Lines to display (in order)
+    # Set 'enabled: false' to disable a line
+    lines:
+      - text: "&7{kit-description}"
+        enabled: false
+        show-if-empty: false  # Only show if description exists
+
+      - text: ""
+        enabled: false
+
+      - text: "&7» &aPlaying: &f{playing}"
+        enabled: true
+
+      - text: "&7» &aQueueing: &f{queueing}"
+        enabled: true
+
+      - text: ""
+        enabled: false
+
+      - text: "&f&lDaily Streak: &6{daily-streak}"
+        enabled: false  # Disabled for now (placeholder)
+
+      # Leaderboard section
+      - text: " &f1. &6{top1-name} &f- &6{top1-value}"
+        enabled: false  # Disabled (placeholder)
+
+      - text: " &f2. &6{top2-name} &f- &6{top2-value}"
+        enabled: false  # Disabled (placeholder)
+
+      - text: " &f3. &6{top3-name} &f- &6{top3-value}"
+        enabled: false  # Disabled (placeholder)
+
+      - text: ""
+        enabled: true
+
+      - text: "&aClick to play."
+        enabled: true

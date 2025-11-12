@@ -13,10 +13,12 @@ import dev.revere.alley.library.menu.pagination.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,7 +37,20 @@ public class CurrentMatchesMenu extends PaginatedMenu {
      */
     @Override
     public String getPrePaginatedTitle(Player player) {
-        return "&6&lCurrent Matches (" + AlleyPlugin.getInstance().getService(MatchService.class).getMatches().size() + ")";
+        int matchCount = AlleyPlugin.getInstance().getService(MatchService.class).getMatches().size();
+
+        File configFile = new File(AlleyPlugin.getInstance().getDataFolder(), "menus/current-matches-menu.yml");
+
+        if (!configFile.exists()) {
+            return "&6&lCurrent Matches (" + matchCount + ")";
+        }
+
+        FileConfiguration config = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(configFile);
+        String title = config.getString("menu.title", "&6&lCurrent Matches ({count})");
+        title = applyColors(title, config);
+        title = title.replace("{count}", String.valueOf(matchCount));
+
+        return CC.translate(title);
     }
 
     /**
@@ -150,5 +165,27 @@ public class CurrentMatchesMenu extends PaginatedMenu {
             new CurrentMatchesMenu().openMenu(player);
             this.playNeutral(player);
         }
+    }
+
+    /**
+     * Applies color replacements from config.
+     *
+     * @param text   the text to apply colors to
+     * @param config the configuration file
+     * @return the text with colors applied
+     */
+    private String applyColors(String text, FileConfiguration config) {
+        Map<String, String> colors = new HashMap<>();
+        if (config.contains("colors")) {
+            for (String key : config.getConfigurationSection("colors").getKeys(false)) {
+                colors.put("{" + key + "}", config.getString("colors." + key));
+            }
+        }
+
+        for (Map.Entry<String, String> entry : colors.entrySet()) {
+            text = text.replace(entry.getKey(), entry.getValue());
+        }
+
+        return text;
     }
 }

@@ -52,6 +52,7 @@ public class AlleyPlugin extends JavaPlugin {
         instance = this;
 
         this.validatePluginMetadata();
+        this.initializeMenuConfigs();
 
         try {
             this.context = new AlleyContext(this);
@@ -68,6 +69,41 @@ public class AlleyPlugin extends JavaPlugin {
         PluginLogger.onEnable(durationMillis);
 
         this.api.runOnEnableCallbacks();
+    }
+
+    /**
+     * Initialize menu configuration files.
+     * Creates default menu config files if they don't exist.
+     */
+    private void initializeMenuConfigs() {
+        java.io.File menusFolder = new java.io.File(getDataFolder(), "menus");
+        if (!menusFolder.exists()) {
+            menusFolder.mkdirs();
+        }
+
+        // Copy default config files from resources
+        saveResourceIfNotExists("menus/unranked.yml");
+        saveResourceIfNotExists("menus/ranked.yml");
+        saveResourceIfNotExists("menus/settings-menu.yml");
+        saveResourceIfNotExists("menus/cosmetics-menu.yml");
+        saveResourceIfNotExists("menus/leaderboard-menu.yml");
+        saveResourceIfNotExists("menus/current-matches-menu.yml");
+
+        // Copy about.yml config
+        saveResourceIfNotExists("about.yml");
+    }
+
+    /**
+     * Save a resource file if it doesn't already exist.
+     *
+     * @param resourcePath The path to the resource
+     */
+    private void saveResourceIfNotExists(String resourcePath) {
+        java.io.File file = new java.io.File(getDataFolder(), resourcePath);
+        if (!file.exists()) {
+            saveResource(resourcePath, false);
+            Logger.info("Created default configuration file: " + resourcePath);
+        }
     }
 
     @Override

@@ -1,0 +1,57 @@
+# About Message Configuration
+# Customize the /alley command's about message
+
+# Color Customization - Change these to customize colors throughout the about message
+colors:
+  primary: "&d"        # Gold - Main color
+  secondary: "&f"      # White - Secondary text
+  accent: "&7"         # Gray - Accent/parentheses
+  link-github: "&f"    # White - GitHub button
+  link-discord: "&9"   # Blue - Discord button
+  link-builtbybit: "&b"  # Aqua - BuiltByBit button
+  link-spigot: "&e"    # Yellow - SpigotMC button
+  link-hover: "&a"     # Green - Link hover text
+
+# About message content
+message:
+  title: "{primary}&lAlley Practice"
+
+  # Lines in the about message
+  # Available placeholders: {primary}, {secondary}, {accent}, {version}, {authors}, {license}
+  lines:
+    - ""
+    - "     {primary}&A Cute alley :)"
+    - ""
+
+# Clickable link buttons (shown only for players, not console)
+links:
+  enabled: false
+  spacing: "  "  # Space between buttons
+
+  github:
+    enabled: false
+    text: "{link-github}&l[GITHUB]"
+    url: "https://github.com/hmEmmy/alley-practice"
+    hover: "{link-hover}Click to open the GitHub repository."
+
+  discord:
+    enabled: false
+    text: "{link-discord}&l[DISCORD]"
+    url: "https://discord.com/invite/eT4B65k5E4"
+    hover: "{link-hover}Click to join the Revere Discord."
+
+  builtbybit:
+    enabled: false
+    text: "{link-builtbybit}&l[BUILTBYBIT]"
+    url: "https://builtbybit.com/resources/alley-next-generation-practice-core.73088/"
+    hover: "{link-hover}Click to open the BuiltByBit resource page."
+
+  spigotmc:
+    enabled: false
+    text: "{link-spigot}&l[SPIGOTMC]"
+    url: "https://www.spigotmc.org/resources/alley-next-generation-practice-core.127500/"
+    hover: "{link-hover}Click to open the SpigotMC resource page."
+
+# Plugin information (auto-filled from plugin.yml)
+info:
+  license: "CC BY-NC-SA 4.0"

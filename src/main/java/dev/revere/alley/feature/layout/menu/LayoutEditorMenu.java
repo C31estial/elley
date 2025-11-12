@@ -62,7 +62,10 @@ public class LayoutEditorMenu extends Menu {
             buttons.put(23, new LayoutRenameButton(this.layout));
         }
 
-        this.addGlass(buttons, 15);
+        // Add border only (not full background)
+        int size = this.getSize();
+        int rows = size / 9;
+        this.addBorder(buttons, 15, rows);
 
         return buttons;
     }

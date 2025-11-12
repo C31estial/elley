@@ -149,17 +149,7 @@ public enum PracticeSettingType {
                     "&aClick to view.",
                     CC.MENU_BAR
             )
-    ),
-
-    LOBBY_MUSIC(34, "&6&lLobby Music", Material.JUKEBOX,
-            settings -> Arrays.asList(
-                    CC.MENU_BAR,
-                    "&7Customize your lobby music.",
-                    "",
-                    "&aClick to view.",
-                    CC.MENU_BAR
-            )
-    ),
+    )
 
     ;
 

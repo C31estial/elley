@@ -171,7 +171,8 @@ public class ProfileListener implements Listener {
         spawnService.teleportToSpawn(player);
         hotbarService.applyHotbarItems(player);
         visibilityService.updateVisibility(player);
-        musicService.startMusic(player);
+        // Music disabled
+        // musicService.startMusic(player);
 
         player.updateInventory();
     }

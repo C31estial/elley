@@ -1,0 +1,65 @@
+# Leaderboard Menu Configuration
+# Configure the leaderboard menu appearance
+
+# Color Customization - Change these to customize colors throughout the menu
+colors:
+  primary: "&6"        # Gold - Main color
+  secondary: "&7"      # Gray - Description color
+  accent: "&a"         # Green - Action prompts
+  highlight: "&e"      # Yellow - Highlights
+  divider: "&7━━━━━━━━━━━━━━━━━━━━━━━━━"  # Menu bar separator
+
+menu:
+  # Titles for different leaderboard types
+  titles:
+    ranked: "{primary}&lRanked Leaderboards"
+    unranked: "{primary}&lUnranked Leaderboards"
+    unranked-monthly: "{primary}&lMonthly Leaderboards"
+    ffa: "{primary}&lFFA Leaderboards"
+    tournament: "{primary}&lTournament Leaderboards"
+    win-streak: "{primary}&lWin Streak Leaderboards"
+    default: "{primary}&lLeaderboards"
+
+  size: 45  # 5 rows
+  border:
+    enabled: true
+    material: STAINED_GLASS_PANE
+    data: 15  # Black
+    name: " "
+
+# Fixed position buttons
+buttons:
+  statistics:
+    slot: 2
+    display-name: "{primary}&lYour Statistics"
+    material: PAPER
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}View your personal stats."
+      - ""
+      - "{accent}Click to view."
+      - "{divider}"
+
+  display-type:
+    slot: 6
+    display-name: "{primary}&lDisplay Type"
+    material: BOOK
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Change leaderboard type."
+      - ""
+      - "{highlight}Current: &f{type}"
+      - ""
+      - "{accent}Click to change."
+      - "{divider}"
+
+# Kit buttons will be dynamically placed starting at slot 10
+kit-button:
+  lore:
+    - "{divider}"
+    - "{secondary}Top players for {kit}."
+    - ""
+    - "{accent}Click to view leaderboard."
+    - "{divider}"

@@ -1,14 +1,18 @@
 package dev.revere.alley.feature.hotbar.listener;
 
 import dev.revere.alley.AlleyPlugin;
-import dev.revere.alley.library.menu.Menu;
+import dev.revere.alley.common.logger.Logger;
+import dev.revere.alley.common.text.CC;
+import dev.revere.alley.core.locale.LocaleService;
+import dev.revere.alley.core.locale.internal.impl.message.GlobalMessagesLocaleImpl;
+import dev.revere.alley.core.profile.Profile;
+import dev.revere.alley.core.profile.ProfileService;
+import dev.revere.alley.core.profile.enums.ProfileState;
+import dev.revere.alley.feature.hotbar.HotbarAction;
 import dev.revere.alley.feature.hotbar.HotbarItem;
 import dev.revere.alley.feature.hotbar.HotbarService;
-import dev.revere.alley.feature.hotbar.HotbarAction;
 import dev.revere.alley.feature.hotbar.HotbarType;
-import dev.revere.alley.core.profile.ProfileService;
-import dev.revere.alley.core.profile.Profile;
-import dev.revere.alley.common.logger.Logger;
+import dev.revere.alley.library.menu.Menu;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -59,7 +63,17 @@ public class HotbarListener implements Listener {
                 player.performCommand(hotbarItem.getActionData().getCommand());
                 break;
             case OPEN_MENU:
-                Menu menu = hotbarService.getMenuInstanceFromName(hotbarItem.getActionData().getMenuName(), player);
+                String menuName = hotbarItem.getActionData().getMenuName();
+
+                // Don't allow kit editor menu while in queue
+                if ("LAYOUT_EDITOR_MENU".equals(menuName) && profile.getState() == ProfileState.WAITING) {
+                    LocaleService localeService = AlleyPlugin.getInstance().getService(LocaleService.class);
+                    player.sendMessage(localeService.getString(GlobalMessagesLocaleImpl.ERROR_YOU_MUST_BE_IN_LOBBY));
+                    event.setCancelled(true);
+                    return;
+                }
+
+                Menu menu = hotbarService.getMenuInstanceFromName(menuName, player);
                 menu.openMenu(player);
                 break;
         }

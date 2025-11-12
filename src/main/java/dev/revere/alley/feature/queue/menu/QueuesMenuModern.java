@@ -3,6 +3,7 @@ package dev.revere.alley.feature.queue.menu;
 import dev.revere.alley.AlleyPlugin;
 import dev.revere.alley.library.menu.Button;
 import dev.revere.alley.library.menu.Menu;
+import dev.revere.alley.library.menu.impl.CloseButton;
 import dev.revere.alley.feature.kit.KitService;
 import dev.revere.alley.feature.kit.Kit;
 import dev.revere.alley.feature.kit.KitCategory;
@@ -22,10 +23,13 @@ import dev.revere.alley.common.text.LoreHelper;
 import dev.revere.alley.common.text.CC;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +41,12 @@ import java.util.Map;
  * @date 23/05/2024 - 01:28
  */
 public class QueuesMenuModern extends Menu {
+    private final FileConfiguration unrankedConfig;
+
+    public QueuesMenuModern() {
+        File configFile = new File(AlleyPlugin.getInstance().getDataFolder(), "menus/unranked.yml");
+        this.unrankedConfig = YamlConfiguration.loadConfiguration(configFile);
+    }
     /**
      * Get the title of the menu.
      *
@@ -64,7 +74,7 @@ public class QueuesMenuModern extends Menu {
         ProfileService profileService = AlleyPlugin.getInstance().getService(ProfileService.class);
         Profile profile = profileService.getProfile(player.getUniqueId());
 
-        buttons.put(2, new QueuesButtonModern("&6&lUnranked", Material.DIAMOND_SWORD, 0, Arrays.asList(
+        buttons.put(3, new QueuesButtonModern("&6&lUnranked", Material.DIAMOND_SWORD, 0, Arrays.asList(
                 CC.MENU_BAR,
                 "&7Casual 1v1s with",
                 "&7no loss penalty.",
@@ -73,9 +83,9 @@ public class QueuesMenuModern extends Menu {
                 "",
                 this.getLore(profile, QueueType.UNRANKED),
                 CC.MENU_BAR
-        )));
+        ), profile.getQueueType() == QueueType.UNRANKED));
 
-        buttons.put(4, new QueuesButtonModern("&6&lUnranked Duos", Material.GOLD_SWORD, 0, Arrays.asList(
+        buttons.put(5, new QueuesButtonModern("&6&lUnranked Duos", Material.GOLD_SWORD, 0, Arrays.asList(
                 CC.MENU_BAR,
                 "&7Casual 2v2s with",
                 "&7no penalty loss",
@@ -84,18 +94,9 @@ public class QueuesMenuModern extends Menu {
                 "",
                 this.getLore(profile, QueueType.DUOS),
                 CC.MENU_BAR
-        )));
+        ), profile.getQueueType() == QueueType.DUOS));
 
-        buttons.put(6, new QueuesButtonModern("&6&lFFA", Material.GOLD_AXE, 0, Arrays.asList(
-                CC.MENU_BAR,
-                "&7Free for all with",
-                "&7infinity respawns.",
-                "",
-                "&6│ &fPlayers: &6" + queueService.getPlayerCountOfGameType("FFA"),
-                "",
-                this.getLore(profile, QueueType.FFA),
-                CC.MENU_BAR
-        )));
+        // FFA removed as requested
 
         int slot = 10;
         switch (profile.getQueueType()) {
@@ -103,11 +104,9 @@ public class QueuesMenuModern extends Menu {
                 for (Queue queue : AlleyPlugin.getInstance().getService(QueueService.class).getQueues()) {
                     if (!queue.isRanked() && !queue.isDuos() && queue.getKit().getCategory() == KitCategory.NORMAL) {
                         slot = this.skipIfSlotCrossingBorder(slot);
-                        buttons.put(slot++, new UnrankedButton(queue));
+                        buttons.put(slot++, new UnrankedButton(queue, unrankedConfig));
                     }
                 }
-
-                buttons.put(40, new QueueModeSwitcherButton(QueueType.UNRANKED, KitCategory.EXTRA));
 
                 break;
             case BOTS:
@@ -121,22 +120,24 @@ public class QueuesMenuModern extends Menu {
                 for (Queue queue : AlleyPlugin.getInstance().getService(QueueService.class).getQueues()) {
                     if (!queue.isRanked() && queue.isDuos() && queue.getKit().getCategory() == KitCategory.NORMAL) {
                         slot = this.skipIfSlotCrossingBorder(slot);
-                        buttons.put(slot++, new UnrankedButton(queue));
+                        buttons.put(slot++, new UnrankedButton(queue, unrankedConfig));
                     }
                 }
 
-                buttons.put(40, new QueueModeSwitcherButton(QueueType.DUOS, KitCategory.EXTRA));
-
                 break;
             case FFA:
-                for (FFAMatch match : AlleyPlugin.getInstance().getService(FFAService.class).getMatches()) {
-                    buttons.put(match.getKit().getFfaSlot(), new FFAButton(match));
-                }
-
+                // FFA removed
                 break;
         }
 
-        this.addGlass(buttons, 15);
+        // Add border instead of full background
+        int size = this.getSize();
+        int rows = size / 9;
+        this.addBorder(buttons, 15, rows);
+
+        // Add close button at bottom center
+        int closeButtonSlot = (rows * 9) - 5;
+        buttons.put(closeButtonSlot, new CloseButton("INK_SACK", 1, "&cClose", Arrays.asList("&7Click to close this menu")));
 
         return buttons;
     }
@@ -152,15 +153,22 @@ public class QueuesMenuModern extends Menu {
         private Material material;
         private int durability;
         private List<String> lore;
+        private boolean glint;
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            return new ItemBuilder(this.material)
+            ItemBuilder builder = new ItemBuilder(this.material)
                     .name(this.displayName)
                     .durability(this.durability)
-                    .lore(this.lore)
-                    .hideMeta()
-                    .build();
+                    .lore(this.lore);
+
+            if (this.glint) {
+                builder.glow(true);
+            }
+
+            builder.hideMeta();
+
+            return builder.build();
         }
 
         @Override

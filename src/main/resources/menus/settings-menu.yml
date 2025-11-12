@@ -1,0 +1,171 @@
+# Settings Menu Configuration
+# Configure the practice settings menu appearance
+
+# Color Customization - Change these to customize colors throughout the menu
+colors:
+  primary: "&6"        # Gold - Main color
+  secondary: "&7"      # Gray - Description color
+  accent: "&a"         # Green - Action prompts
+  highlight: "&e"      # Yellow - Highlights
+  divider: "&7━━━━━━━━━━━━━━━━━━━━━━━━━"  # Menu bar separator
+
+menu:
+  title: "{primary}&lPractice Settings"
+  size: 45  # 5 rows
+  border:
+    enabled: true
+    material: STAINED_GLASS_PANE
+    data: 15  # Black
+    name: " "
+
+# Individual setting buttons
+buttons:
+  party-messages:
+    slot: 10
+    display-name: "{primary}&lToggle Party Messages"
+    material: FEATHER
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}See party chat messages."
+      - ""
+      - "{status}"
+      - ""
+      - "{accent}Click to toggle."
+      - "{divider}"
+
+  party-invites:
+    slot: 11
+    display-name: "{primary}&lToggle Party Invites"
+    material: NAME_TAG
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Receive party invites."
+      - ""
+      - "{status}"
+      - ""
+      - "{accent}Click to toggle."
+      - "{divider}"
+
+  sidebar-visibility:
+    slot: 12
+    display-name: "{primary}&lSidebar Visibility"
+    material: CARPET
+    durability: 5
+    lore:
+      - "{divider}"
+      - "{secondary}See the scoreboard."
+      - ""
+      - "{status}"
+      - ""
+      - "{accent}Click to toggle."
+      - "{divider}"
+
+  tab-visibility:
+    slot: 13
+    display-name: "{primary}&lTablist Visibility"
+    material: ITEM_FRAME
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}See the tablist."
+      - ""
+      - "{status}"
+      - ""
+      - "{accent}Click to toggle."
+      - "{divider}"
+
+  world-time:
+    slot: 14
+    display-name: "{primary}&lWorld time"
+    material: WATCH
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Change your world time."
+      - ""
+      - "{time-status}"
+      - ""
+      - "{accent}Click to toggle."
+      - "{divider}"
+
+  scoreboard-lines:
+    slot: 19
+    display-name: "{primary}&lShow Scoreboard Lines"
+    material: STRING
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Show scoreboard lines."
+      - ""
+      - "{status}"
+      - ""
+      - "{accent}Click to toggle."
+      - "{divider}"
+
+  profanity-filter:
+    slot: 20
+    display-name: "{primary}&lProfanity Filter"
+    material: ROTTEN_FLESH
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Hide rude and offensive words."
+      - ""
+      - "{status}"
+      - ""
+      - "{accent}Click to toggle."
+      - "{divider}"
+
+  duel-requests:
+    slot: 21
+    display-name: "{primary}&lDuel Requests"
+    material: DIAMOND_SWORD
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Receive duel requests."
+      - ""
+      - "{status}"
+      - ""
+      - "{accent}Click to toggle."
+      - "{divider}"
+
+  server-titles:
+    slot: 22
+    display-name: "{primary}&lServer Titles"
+    material: PAPER
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Display titles sent by the server."
+      - ""
+      - "{status}"
+      - ""
+      - "{accent}Click to toggle."
+      - "{divider}"
+
+  match-settings:
+    slot: 16
+    display-name: "{primary}&lMatch Settings"
+    material: BOOK
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Adjust your match settings."
+      - ""
+      - "{accent}Click to view."
+      - "{divider}"
+
+  cosmetics:
+    slot: 25
+    display-name: "{primary}&lCosmetics"
+    material: NETHER_STAR
+    durability: 0
+    lore:
+      - "{divider}"
+      - "{secondary}Customize your cosmetics."
+      - ""
+      - "{accent}Click to view."
+      - "{divider}"

@@ -10,8 +10,11 @@ import dev.revere.alley.feature.queue.QueueType;
 import dev.revere.alley.feature.queue.menu.button.UnrankedButton;
 import dev.revere.alley.feature.queue.menu.extra.button.QueueModeSwitcherButton;
 import lombok.AllArgsConstructor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +26,13 @@ import java.util.Map;
 @AllArgsConstructor
 public class ExtraModesMenu extends Menu {
     private final QueueType queueType;
+    private final FileConfiguration unrankedConfig;
+
+    public ExtraModesMenu(QueueType queueType) {
+        this.queueType = queueType;
+        File configFile = new File(AlleyPlugin.getInstance().getDataFolder(), "menus/unranked.yml");
+        this.unrankedConfig = YamlConfiguration.loadConfiguration(configFile);
+    }
 
     @Override
     public String getTitle(Player player) {
@@ -39,7 +49,7 @@ public class ExtraModesMenu extends Menu {
         for (Queue queue : AlleyPlugin.getInstance().getService(QueueService.class).getQueues()) {
             if (shouldAddQueue(queue, queueType)) {
                 slot = this.skipIfSlotCrossingBorder(slot);
-                buttons.put(slot++, new UnrankedButton(queue));
+                buttons.put(slot++, new UnrankedButton(queue, unrankedConfig));
             }
         }
 
